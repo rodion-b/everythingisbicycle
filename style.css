@@ -300,11 +300,11 @@ h1 {
   left: 50%;
   width: var(--bike-w);
   height: auto;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scaleY(-1);
 }
 
 .bicycle.flipped {
-  transform: translate(-50%, -50%) scaleY(-1);
+  transform: translate(-50%, -50%);
 }
 
 @keyframes orbit {
