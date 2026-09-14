@@ -4,16 +4,41 @@ if (yearLine) {
 }
 
 const discordCta = document.querySelector(".discord-cta");
+const baseTrack = discordCta.querySelector(":scope > .orbit-track");
 const bikeField = document.querySelector(".bike-field");
 const bikeCounter = document.getElementById("bike-counter");
+const lapCounter = document.getElementById("lap-counter");
+const lapFlag = discordCta.querySelector(".lap-flag");
+const lapSuccess = discordCta.querySelector(".lap-success");
 const BASE_BIKE_COUNT = document.querySelectorAll(".bicycle").length;
 const MAX_BIKES = 67;
 let bikeCount = BASE_BIKE_COUNT;
+let lapCount = 0;
 const activeBikes = [];
 
 function updateBikeCounter() {
-  bikeCounter.textContent = `Number of trips: ${bikeCount}`;
+  if (bikeCounter) bikeCounter.textContent = `Number of trips: ${bikeCount}`;
 }
+
+function updateLapCounter() {
+  lapCounter.textContent = `Laps: ${lapCount}`;
+}
+
+baseTrack.addEventListener("animationiteration", () => {
+  lapCount++;
+  updateLapCounter();
+
+  if (lapSuccess) {
+    lapSuccess.animate(
+      [
+        { opacity: 0, transform: "translate(-50%, -100%) scale(0.5)" },
+        { opacity: 1, transform: "translate(-50%, -160%) scale(1.3)", offset: 0.4 },
+        { opacity: 0, transform: "translate(-50%, -220%) scale(1)" },
+      ],
+      { duration: 700, easing: "ease-out" }
+    );
+  }
+});
 
 function addBike() {
   if (bikeCount >= MAX_BIKES) return;
@@ -73,15 +98,21 @@ function resetBikes() {
 }
 
 discordCta.addEventListener("mouseenter", () => {
+  const anim = baseTrack.getAnimations()[0];
+  if (anim) anim.playbackRate = 3;
   addBike();
   addBike();
   addBike();
 });
 
-bikeCounter.addEventListener("click", resetBikes);
+discordCta.addEventListener("mouseleave", () => {
+  const anim = baseTrack.getAnimations()[0];
+  if (anim) anim.playbackRate = 1;
+});
+
+if (bikeCounter) bikeCounter.addEventListener("click", resetBikes);
 
 function alignBaseBikeToButton() {
-  const baseTrack = discordCta.querySelector(":scope > .orbit-track");
   const baseBike = baseTrack && baseTrack.querySelector(".bicycle");
   if (!baseTrack || !baseBike) return;
 
@@ -90,8 +121,19 @@ function alignBaseBikeToButton() {
   const r0 = h / 2;
   const margin = baseBike.offsetHeight / 2 + 3;
   const r = r0 + margin;
+  const midTop = w / 2;
 
-  baseTrack.style.offsetPath = `path("M ${r0} ${-margin} L ${w - r0} ${-margin} A ${r} ${r} 0 0 1 ${w - r0} ${h + margin} L ${r0} ${h + margin} A ${r} ${r} 0 0 1 ${r0} ${-margin} Z")`;
+  baseTrack.style.offsetPath = `path("M ${midTop} ${-margin} L ${w - r0} ${-margin} A ${r} ${r} 0 0 1 ${w - r0} ${h + margin} L ${r0} ${h + margin} A ${r} ${r} 0 0 1 ${r0} ${-margin} L ${midTop} ${-margin}")`;
+
+  if (lapFlag) {
+    lapFlag.style.left = `${midTop}px`;
+    lapFlag.style.top = "0px";
+  }
+  if (lapSuccess) {
+    const flagHeight = lapFlag ? lapFlag.offsetHeight : 0;
+    lapSuccess.style.left = `${midTop}px`;
+    lapSuccess.style.top = `${-flagHeight}px`;
+  }
 }
 
 alignBaseBikeToButton();
