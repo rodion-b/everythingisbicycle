@@ -45,12 +45,19 @@ baseTrack.addEventListener("animationiteration", () => {
   }
 });
 
-function addBike() {
+function addBike(originX, originY) {
   if (bikeCount >= MAX_BIKES) return;
 
-  const rect = discordCta.getBoundingClientRect();
-  const centerX = ((rect.left + rect.width / 2) / window.innerWidth) * 100;
-  const centerY = ((rect.top + rect.height / 2) / window.innerHeight) * 100;
+  let originPxX = originX;
+  let originPxY = originY;
+  if (originPxX === undefined || originPxY === undefined) {
+    const rect = discordCta.getBoundingClientRect();
+    originPxX = rect.left + rect.width / 2;
+    originPxY = rect.top + rect.height / 2;
+  }
+
+  const centerX = (originPxX / window.innerWidth) * 100;
+  const centerY = (originPxY / window.innerHeight) * 100;
 
   const rx = 15 + Math.random() * 45;
   const ry = 15 + Math.random() * 45;
@@ -117,8 +124,8 @@ discordCta.addEventListener("mouseleave", () => {
 
 if (bikeCounter) bikeCounter.addEventListener("click", resetBikes);
 
-document.addEventListener("click", () => {
-  addBike();
+document.addEventListener("click", (event) => {
+  addBike(event.clientX, event.clientY);
 });
 
 function alignBaseBikeToButton() {
