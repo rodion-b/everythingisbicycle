@@ -77,6 +77,16 @@ h1 {
   flex-shrink: 0;
 }
 
+@media (max-width: 480px) {
+  .discord-wrap {
+    gap: 1rem;
+  }
+
+  .cta-arrow {
+    width: 2.75rem;
+  }
+}
+
 .cta-arrow-left {
   animation: nudge-right 1.4s ease-in-out infinite;
 }

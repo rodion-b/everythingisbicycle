@@ -117,6 +117,10 @@ discordCta.addEventListener("mouseleave", () => {
 
 if (bikeCounter) bikeCounter.addEventListener("click", resetBikes);
 
+document.addEventListener("click", () => {
+  addBike();
+});
+
 function alignBaseBikeToButton() {
   const baseBike = baseTrack && baseTrack.querySelector(".bicycle");
   if (!baseTrack || !baseBike) return;
