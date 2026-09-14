@@ -48,21 +48,37 @@ baseTrack.addEventListener("animationiteration", () => {
 function addBike(originX, originY) {
   if (bikeCount >= MAX_BIKES) return;
 
+  const isClickOrigin = originX !== undefined && originY !== undefined;
+
   let originPxX = originX;
   let originPxY = originY;
-  if (originPxX === undefined || originPxY === undefined) {
+  if (!isClickOrigin) {
     const rect = discordCta.getBoundingClientRect();
     originPxX = rect.left + rect.width / 2;
     originPxY = rect.top + rect.height / 2;
   }
 
-  const centerX = (originPxX / window.innerWidth) * 100;
-  const centerY = (originPxY / window.innerHeight) * 100;
-
   const rx = 15 + Math.random() * 45;
   const ry = 15 + Math.random() * 45;
   const duration = 3 + Math.random() * 9;
   const size = 0.7 + Math.random() * 5;
+
+  let centerX;
+  let centerY;
+  if (isClickOrigin) {
+    // Place the ellipse so the click point sits on its circumference
+    // (at a random angle) instead of at its center.
+    const rxPx = (rx / 100) * window.innerWidth;
+    const ryPx = (ry / 100) * window.innerHeight;
+    const theta = Math.random() * Math.PI * 2;
+    const centerPxX = originPxX - rxPx * Math.cos(theta);
+    const centerPxY = originPxY - ryPx * Math.sin(theta);
+    centerX = (centerPxX / window.innerWidth) * 100;
+    centerY = (centerPxY / window.innerHeight) * 100;
+  } else {
+    centerX = (originPxX / window.innerWidth) * 100;
+    centerY = (originPxY / window.innerHeight) * 100;
+  }
 
   const track = document.createElement("span");
   track.className = "orbit-track";
