@@ -79,3 +79,20 @@ discordCta.addEventListener("mouseenter", () => {
 });
 
 bikeCounter.addEventListener("click", resetBikes);
+
+function alignBaseBikeToButton() {
+  const baseTrack = discordCta.querySelector(":scope > .orbit-track");
+  const baseBike = baseTrack && baseTrack.querySelector(".bicycle");
+  if (!baseTrack || !baseBike) return;
+
+  const w = discordCta.offsetWidth;
+  const h = discordCta.offsetHeight;
+  const r0 = h / 2;
+  const margin = baseBike.offsetHeight / 2 + 3;
+  const r = r0 + margin;
+
+  baseTrack.style.offsetPath = `path("M ${r0} ${-margin} L ${w - r0} ${-margin} A ${r} ${r} 0 0 1 ${w - r0} ${h + margin} L ${r0} ${h + margin} A ${r} ${r} 0 0 1 ${r0} ${-margin} Z")`;
+}
+
+alignBaseBikeToButton();
+window.addEventListener("resize", alignBaseBikeToButton);
