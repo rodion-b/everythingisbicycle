@@ -143,3 +143,13 @@ function alignBaseBikeToButton() {
 
 alignBaseBikeToButton();
 window.addEventListener("resize", alignBaseBikeToButton);
+
+function scheduleRandomBike() {
+  const delay = 2000 + Math.random() * 6000;
+  setTimeout(() => {
+    addBike();
+    scheduleRandomBike();
+  }, delay);
+}
+
+scheduleRandomBike();
