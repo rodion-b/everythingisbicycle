@@ -303,6 +303,10 @@ h1 {
   transform: translate(-50%, -50%);
 }
 
+.bicycle.flipped {
+  transform: translate(-50%, -50%) scaleX(-1);
+}
+
 @keyframes orbit {
   to {
     offset-distance: 100%;

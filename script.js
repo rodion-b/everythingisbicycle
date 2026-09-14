@@ -10,6 +10,7 @@ const bikeCounter = document.getElementById("bike-counter");
 const lapCounter = document.getElementById("lap-counter");
 const lapFlag = discordCta.querySelector(".lap-flag");
 const lapSuccess = discordCta.querySelector(".lap-success");
+const baseBikeImg = baseTrack.querySelector(".bicycle");
 const BASE_BIKE_COUNT = document.querySelectorAll(".bicycle").length;
 const MAX_BIKES = 67;
 let bikeCount = BASE_BIKE_COUNT;
@@ -27,6 +28,8 @@ function updateLapCounter() {
 baseTrack.addEventListener("animationiteration", () => {
   lapCount++;
   updateLapCounter();
+
+  if (baseBikeImg) baseBikeImg.classList.toggle("flipped");
 
   if (lapSuccess) {
     lapSuccess.animate(
