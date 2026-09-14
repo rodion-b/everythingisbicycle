@@ -123,6 +123,15 @@ h1 {
   transition: transform 0.15s ease;
 }
 
+.cta-text {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.cta-text.flipped {
+  transform: scaleX(-1);
+}
+
 .discord-cta:hover {
   --glow: rgba(236, 72, 153, 0.9);
   --glow-min: 22px;
